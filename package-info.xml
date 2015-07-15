@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE package-info SYSTEM "http://www.simplemachines.org/xml/package-info">
+<!---
+/**
+* @package Activity Checker Mod
+*
+* @author Cody Williams
+* @copyright 2015
+* @version 1.2
+* @license BSD 3-clause
+*/
+-->
+<package-info xmlns="http://www.simplemachines.org/xml/package-info" xmlns:smf="http://www.simplemachines.org/">
+	<id>cody:Activity Checker</id>
+	<name>Activity Checker Mod</name>
+	<type>modification</type>
+	<version>1.0</version>
+	
+	<install for="2.0 - 2.0.99,2.0 RC2,2.0 RC3,2.0 RC4,2.0 RC5">
+		<code>install-hooks.php</code>
+		<require-dir name="Sources" destination="$boarddir" />
+		<require-dir name="Themes" destination="$boarddir" />
+		<redirect url="$scripturl?action=admin;area=activity_checker" />
+	</install>
+	
+	<uninstall for="2.0 - 2.0.99,2.0 RC2,2.0 RC3,2.0 RC4,2.0 RC5">
+		<code>install-hooks.php</code>
+		<remove-file name="$sourcedir/activityChecker.php" />
+		<remove-file name="$themedir/activityChecker.template.php" />
+<!--		<remove-file name="$themedir/css/activityChecker.css" /> -->
+		<remove-file name="$languagedir/activityChecker.english.php" />
+	</uninstall>
+</package-info>
