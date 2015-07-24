@@ -18,6 +18,7 @@
 	
 	<install for="2.0 - 2.0.99,2.0 RC2,2.0 RC3,2.0 RC4,2.0 RC5">
 		<code>install-hooks.php</code>
+		<database type="file">install-database.php</database>
 		<require-dir name="Sources" destination="$boarddir" />
 		<require-dir name="Themes" destination="$boarddir" />
 		<redirect url="$scripturl?action=admin;area=activity_checker" />
@@ -25,9 +26,10 @@
 	
 	<uninstall for="2.0 - 2.0.99,2.0 RC2,2.0 RC3,2.0 RC4,2.0 RC5">
 		<code>install-hooks.php</code>
-		<remove-file name="$sourcedir/activityChecker.php" />
-		<remove-file name="$themedir/activityChecker.template.php" />
+		<remove-file name="$sourcedir/ActivityChecker.php" />
+		<remove-file name="$sourcedir/Subs-ActivityChecker.php" />
+		<remove-file name="$themedir/ActivityChecker.template.php" />
 <!--		<remove-file name="$themedir/css/activityChecker.css" /> -->
-		<remove-file name="$languagedir/activityChecker.english.php" />
+		<remove-file name="$languagedir/ActivityChecker.english.php" />
 	</uninstall>
 </package-info>
