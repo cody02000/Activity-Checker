@@ -40,6 +40,16 @@ function activityChecker_adminMenu(&$admin_areas)
 	);
 }
 
+/**
+ *  Gets items for active and inactive lists.
+ *  
+ *  @param int $start
+ *  @param int $items_per_page
+ *  @param string $sort
+ *  @param string $membergroup
+ *	@param array $boards
+ *	@param string $time
+ */
 function list_getItemsActivityChecker($start, $items_per_page, $sort,$membergroup,$boards,$time)
 {
 	global $smcFunc, $txt, $scripturl, $modSettings;
@@ -109,6 +119,14 @@ function list_getItemsActivityChecker($start, $items_per_page, $sort,$membergrou
 	return $activity_checker;
 }
 
+/**
+ *  Gets items for no posts list.
+ *  
+ *  @param int $start
+ *  @param int $items_per_page
+ *  @param string $sort
+ */
+
 function list_getItemsNoPostsChecker($start, $items_per_page, $sort)
 {
 	global $smcFunc, $txt, $scripturl, $modSettings;
@@ -157,17 +175,25 @@ function list_getItemsNoPostsChecker($start, $items_per_page, $sort)
 }
 
 
-// Add one or more members to a membergroup.
-/* Supported types:
-	- only_primary      - Assigns a membergroup as primary membergroup, but only
-						  if a member has not yet a primary membergroup assigned,
-						  unless the member is already part of the membergroup.
-	- only_additional   - Assigns a membergroup to the additional membergroups,
-						  unless the member is already part of the membergroup.
-	- force_primary     - Assigns a membergroup as primary membergroup no matter
-						  what the previous primary membergroup was.
-	- auto              - Assigns a membergroup to the primary group if it's still
-						  available. If not, assign it to the additional group. */
+/**
+ *  Adds one or more members to a membergroup
+ *  
+ *  @param array $members
+ *  @param int $group
+ *  @param string $type
+ *  @param boolean $permissionCheckDone
+ *  
+ *  Supported types:
+ *  - only_primary      - Assigns a membergroup as primary membergroup, but only
+ *  					  if a member has not yet a primary membergroup assigned,
+ *  					  unless the member is already part of the membergroup.
+ *  - only_additional   - Assigns a membergroup to the additional membergroups,
+ *  					  unless the member is already part of the membergroup.
+ *  - force_primary     - Assigns a membergroup as primary membergroup no matter
+ *  					  what the previous primary membergroup was.
+ *  - auto              - Assigns a membergroup to the primary group if it's still
+ *  					  available. If not, assign it to the additional group.
+ */
 function activityChecker_addMembersToGroup($members, $group, $type = 'auto', $permissionCheckDone = false)
 {
 	global $smcFunc, $user_info, $modSettings;
@@ -250,6 +276,13 @@ function activityChecker_addMembersToGroup($members, $group, $type = 'auto', $pe
 	return true;
 }
 
+/**
+ *  Remove one of more members from one or more membergroups.
+ *  
+ *  @param array $members
+ *  @param array $groups
+ *  @param boolean $permissionCheckDone
+ */
 // Remove one or more members from one or more membergroups.
 function activityChecker_removeMembersFromGroups($members, $groups = null, $permissionCheckDone = false)
 {
@@ -339,6 +372,13 @@ function activityChecker_removeMembersFromGroups($members, $groups = null, $perm
 	return true;
 }
 
+/**
+ *  Gets previous membergroups of members being changed for logging.
+ *	Passes them to a global variable.
+ *  
+ *  @param array $members
+ */
+
 function activityChecker_logPreviousGroups($members) {
 	global $smcFunc, $user_info, $activityChecker, $txt, $modSettings;
 		$request = $smcFunc['db_query']('', '
@@ -388,6 +428,14 @@ function activityChecker_logPreviousGroups($members) {
 
 		return true;
 }
+
+/**
+ *  Gets current membergroups of members being changed for logging
+ *	and pulls previous group information from global $activityChecker
+ *	and logs the information.
+ *  
+ *  @param array $members
+ */
 
 function activityChecker_logMembergroupChange($members) {
 	global $smcFunc, $user_info, $activityChecker, $modSettings, $txt;

@@ -73,7 +73,15 @@ function activityChecker_adminMain()
 	$subActions[$_REQUEST['sa']]();
 }
 
-// The function that handles creating the inactive list.
+/**
+ *  Creates a list of inactive members based on being in the active group
+ *	and not posting in a given amount of time.
+ *
+ *	Allows moving those members to designated inactive group, and if enabled
+ *	will send personal message to those members moved.
+ *  
+ *  @param array $return_config
+ */
 function activityChecker_inactiveList($return_config = false)
 {
 	global $sourcedir, $txt, $scripturl, $context, $settings, $sc, $modSettings, $smcFunc, $activityChecker;
@@ -212,7 +220,14 @@ function activityChecker_inactiveList($return_config = false)
 		$context['sub_template'] = 'inactive';
 }
 
-// The function that handles creating the active list.
+/**
+ *  Creates a list of active members based on being in the inactive group
+ *	and having posted within a given amount a time.
+ *
+ *	Allows moving those members to designated active group.
+ *  
+ *  @param array $return_config
+ */
 function activityChecker_activeList($return_config = false)
 {
 	global $sourcedir, $txt, $scripturl, $context, $settings, $sc, $modSettings, $smcFunc, $activityChecker;
@@ -342,6 +357,18 @@ function activityChecker_activeList($return_config = false)
 		$context['sub_template'] = 'inactive';
 }
 
+/**
+ *  Creates a list of members who have 0 post count,
+ *	and pulls the last post of members who have posted on
+ *	boards that are not counted toward post counts.
+ *	
+ 
+ *	Allows deletion of those members, and if enabled
+ *	sends email on deletion to those members.
+ *  
+ *  @param array $return_config
+ */
+
 function activityChecker_noPostsList() {
 	global $sourcedir, $txt, $scripturl, $context, $settings, $sc, $modSettings, $smcFunc, $activityChecker,$mbname;
 	
@@ -452,6 +479,13 @@ function activityChecker_noPostsList() {
 		//	Set up the variables needed by the template.
 		$context['default_list'] = 'no_post_list';		
 }
+
+/**
+ *  General settings for inactive time, inactive group, active group
+ *	and categories to check for posts.
+ *  
+ *
+ */
 
 function activityChecker_settings()
 {
@@ -573,6 +607,15 @@ function activityChecker_settings()
 	createList($listOptions);
 }
 
+/**
+ *  Gets items for general settings membergroup and categories lists.
+ *  
+ *  @param int $start
+ *  @param int $items_per_page
+ *  @param string $sort
+ *  @param boolean $groups
+ */
+
 function list_getActivityCheckerSettings($start, $items_per_page, $sort, $groups)
 {
 	global $txt, $modSettings, $smcFunc, $scripturl;
@@ -625,6 +668,14 @@ function list_getActivityCheckerSettings($start, $items_per_page, $sort, $groups
 	
 	return $list;
 }
+
+/**
+ *  Settings for sending PM on move to inactive group and for sending
+ *	an email when a member is deleted from the no posts list.
+ *
+ *
+ *  @param array $return_config
+ */
 
 function activityChecker_pm_email_settings ($return_config = false) {
 	global $sourcedir, $txt, $scripturl, $context, $settings, $sc, $modSettings, $smcFunc;

@@ -1,6 +1,6 @@
 <?php
 /**
-* @package RPG Date and Calendar Mod
+* @package Acitivity Checker
 *
 * @author Cody Williams
 * @copyright 2015
@@ -21,9 +21,20 @@ global $smcFunc, $db_prefix, $modSettings, $sourcedir, $boarddir, $settings, $db
 
   $defaults = array(
     'activity_checker_cats'=> '0',
-    'activity_checker_filter_membergroups'=> '0',
 	'activity_checker_inactive_group'=> '0',
 	'activity_checker_inactive_time'=> 4,
+	'activity_checker_categories' = > 0,
+	'activity_checker_inactive_group' = > 0,
+	'activity_checker_active_group' = > 0,
+	'activity_checker_inactive_pm_enable' = > 0,
+	'activity_checker_inactive_pm_from' = > 0,
+	'activity_checker_inactive_pm_bcc' = > 0,
+	'activity_checker_inactive_pm_subject' = > 0,
+	'activity_checker_inactive_pm_message' = > 0,
+	'activity_checker_email_enable' = > 0,
+	'activity_checker_email_subject' = > 0,
+	'activity_checker_email_message' = > 0,
+	'' = > ,
   );
   
   $updates = array(
