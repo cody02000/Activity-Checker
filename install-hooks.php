@@ -19,7 +19,7 @@ global $smcFunc, $db_prefix, $modSettings, $sourcedir, $boarddir, $settings, $db
 
 // Define the hooks
 $hook_functions = array(
-  'integrate_admin_include' => '$sourcedir/ActivityChecker.php',
+  'integrate_admin_include' => '$sourcedir/Subs-ActivityChecker.php',
   'integrate_admin_areas' => 'activityChecker_adminMenu',
 );
 // Adding or removing them?
