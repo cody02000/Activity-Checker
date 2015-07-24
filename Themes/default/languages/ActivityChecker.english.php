@@ -1,10 +1,10 @@
 <?php
 /**
-* @package RPG Date and Calendar Mod
+* @package Activity Checker
 *
 * @author Cody Williams
 * @copyright 2015
-* @version 1.2
+* @version 1.0
 * @license BSD 3-clause
 */
 // First of all, we make sure we are accessing the source file via SMF so that people can not directly access the file. 

@@ -2,7 +2,7 @@
 <!DOCTYPE modification SYSTEM "http://www.simplemachines.org/xml/modification">
 <!--
 /**
-* @package Activity Checker Mod
+* @package Activity Checker
 *
 * @author Cody Williams
 * @copyright 2015
@@ -18,9 +18,9 @@
     <operation>
       <search position="end" />
       <add><![CDATA[
+//Activity Checker Mod
 $txt['modlog_ac_inactive_check'] = 'Moved {members} from "{group_from}" to "{group_to}".';
 $txt['modlog_ac_active_check'] = 'Moved {members} from "{group_from}" to "{group_to}".';
-$txt['modlog_ac_no_post_check'] = 'Moved {members} from "{group_from}" to "{group_to}".';
 ]]></add>
     </operation>
   </file>
