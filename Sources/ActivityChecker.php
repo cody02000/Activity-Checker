@@ -114,7 +114,8 @@ function activityChecker_inactiveList($return_config = false)
 			require_once($sourcedir . '/Subs-Post.php');
 			$recipients['to'] = $membernames;
 			$recipients['bcc'] = explode(',', $modSettings['activity_checker_inactive_pm_bcc']);
-			sendpm($recipients, $modSettings['activity_checker_inactive_pm_subject'], $modSettings['activity_checker_inactive_pm_message'], false, unserialize($modSettings['activity_checker_inactive_pm_from']), 0);
+			$from = $modSettings['activity_checker_inactive_pm_from'] !=0 ? unserialize($modSettings['activity_checker_inactive_pm_from']) : null;
+			sendpm($recipients, $modSettings['activity_checker_inactive_pm_subject'], $modSettings['activity_checker_inactive_pm_message'], false, $from, 0);
 		}
 	}
 
@@ -650,6 +651,8 @@ function activityChecker_pm_email_settings ($return_config = false) {
 			)
 	);
 	$from_options=array();
+	$from_options[0]='User Performing Check';
+	$from_final[0]=0;
 	while($row = $smcFunc['db_fetch_assoc']($request)) {
 		$option=array(
 			'id' => $row['id_member'],
