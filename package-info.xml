@@ -2,17 +2,17 @@
 <!DOCTYPE package-info SYSTEM "http://www.simplemachines.org/xml/package-info">
 <!---
 /**
-* @package Activity Checker Mod
+* @package Activity Checker
 *
 * @author Cody Williams
 * @copyright 2015
-* @version 1.2
+* @version 1.0
 * @license BSD 3-clause
 */
 -->
 <package-info xmlns="http://www.simplemachines.org/xml/package-info" xmlns:smf="http://www.simplemachines.org/">
 	<id>cody:Activity Checker</id>
-	<name>Activity Checker Mod</name>
+	<name>Activity Checker</name>
 	<type>modification</type>
 	<version>1.0</version>
 	
