@@ -56,6 +56,8 @@ $txt['activity_checker_email_body_desc'] = 'This is where you set the email mess
 $txt['no_membergroup'] = 'No primary membergroup';
 $txt['last-post'] = 'Last Post';
 $txt['activity_checker_member_name_title'] = 'Member Name';
+$txt['activity_checker_cutoff'] = 'Current activity cutoff date: ';
+$txt['activity_checker_weeks'] = ' Weeks';
 
 //Inactive List
 $txt['activity_checker_inactive_list_title'] = 'Inactive Member List';

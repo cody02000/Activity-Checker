@@ -206,6 +206,10 @@ function activityChecker_inactiveList($return_config = false)
 						<input type="submit" name="mark_inactive" value="' . $txt['activity_checker_mark_inactive'] . '" class="button_submit" />',
 					'style' => 'text-align: right;',
 				),
+				array(
+					'position' => 'top_of_list',
+					'value' => $txt['activity_checker_cutoff'] . date('F d, Y, h:i:s',$posttime) . ' (' . $modSettings['activity_checker_inactive_time'] . $txt['activity_checker_weeks'] .')',
+				),
 			),
 		);
 
@@ -344,6 +348,10 @@ function activityChecker_activeList($return_config = false)
 					'value' => '
 						<input type="submit" name="mark_active" value="' . $txt['activity_checker_mark_active'] . '" class="button_submit" />',
 					'style' => 'text-align: right;',
+				),
+				array(
+					'position' => 'top_of_list',
+					'value' => $txt['activity_checker_cutoff'] . date('F d, Y, h:i:s',$posttime) . ' (' . $modSettings['activity_checker_inactive_time'] . $txt['activity_checker_weeks'] .')',
 				),
 			),
 		);
