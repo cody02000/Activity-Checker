@@ -11,7 +11,7 @@
 */
 -->
 <package-info xmlns="http://www.simplemachines.org/xml/package-info" xmlns:smf="http://www.simplemachines.org/">
-	<id>cody:Activity Checker</id>
+	<id>cody:ActivityChecker</id>
 	<name>Activity Checker</name>
 	<type>modification</type>
 	<version>1.0</version>
