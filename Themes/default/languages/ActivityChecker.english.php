@@ -33,24 +33,31 @@ $txt['activity_checker_settings'] = 'Activity Checker Settings';
 $txt['activity_checker_membergroup_settings_title'] = 'Membergroups Settings';
 $txt['activity_checker_membergroup_col'] = 'Membergroup';
 $txt['activity_checker_description_col'] = 'Description';
-$txt['activity_checker_filterGroup_col'] = 'Do Not Include in Activity Check';
 $txt['activity_checker_activeGroup_col'] = 'Active Group';
 $txt['activity_checker_inactiveGroup_col'] = 'Inactive Group';
+$txt['activity_checker_membergroup_desc'] = 'Select the active and inactive group.
+<ul>
+<li>The <span style="font-style: italic;">' . $txt['activity_checker_inactive_list'] . '</span> checks for inactive members in the active group.</li>
+<li>The <span style="font-style: italic;">' . $txt['activity_checker_active_list'] . '</span> checks for active members in the inactive group.</li>
+</ul>';
+$txt['activity_checker_category_desc'] = 'Select the categories to check for the activity checks to check for posts in.';
+
 //Category settings
 $txt['activity_checker_category_settings_title'] = 'Categories to Check Activity In';
 $txt['activity_checker_category_col'] = 'Category';
 $txt['activity_checker_catChecked_col'] = 'Check for Activity';
 
 //PM and Email Settings
-$txt['activity_checker_inactive_pm_enable'] = 'Send PM to members when moving them to inactive group.';
+$txt['activity_checker_inactive_pm_enable'] = 'Send PM to members on move to inactive group.';
 $txt['activity_checker_inactive_pm_from'] = 'From:';
 $txt['activity_checker_inactive_pm_bcc'] = 'BCC: (Usernames seperated by commas)';
 $txt['activity_checker_inactive_pm_subject'] = 'Inactive PM Subject:';
 $txt['activity_checker_inactive_pm_message'] = 'Inactive PM Message:';
+$txt['activity_checker_inactive_pm_message_desc'] = 'This is the Personal Message that is sent to the member when their account is moved to the inactive group.';
 $txt['activity_checker_email_enable'] = 'Send Email to members who have been deleted via the No Posts List.';
 $txt['activity_checker_email_subject'] = 'Member Deleted Email Subject:';
 $txt['activity_checker_email_message'] = 'Member Deleted Email Message:';
-$txt['activity_checker_email_body_desc'] = 'This is where you set the email message that you would like to send to the user. To insert the username of the user just insert "<b>{RECPNAME}</b>".  For forum name use "<b>{forumname}</b>".';
+$txt['activity_checker_email_message_desc'] = 'This is the email message that is sent to the user when their account is deleted. To insert the username of the user just insert "<b>{RECPNAME}</b>".  For forum name use "<b>{forumname}</b>".';
 
 //List Pages
 $txt['no_membergroup'] = 'No primary membergroup';
@@ -62,14 +69,16 @@ $txt['activity_checker_weeks'] = ' Weeks';
 //Inactive List
 $txt['activity_checker_inactive_list_title'] = 'Inactive Member List';
 $txt['activity_checker_no_inactive'] = 'There are no currently inactive members in the active group.';
-$txt['activity_checker_mark_inactive'] = 'Mark Inactive';
+$txt['activity_checker_mark_inactive'] = 'Move Selected Members to Inactive Group';
+$txt['activity_checker_inactive_pm_enabled'] = 'A Personal Message Will Be Sent to Members Moved to Inactive Group.';
+
 
 //Active List
 $txt['activity_checker_active_list_title'] = 'Active Member List';
 $txt['activity_checker_no_active'] = 'There are no currently active members in the inactive group.';
-$txt['activity_checker_mark_active'] = 'Mark Active';
+$txt['activity_checker_mark_active'] = 'Move Selected Members to Active Group';
 
 //No Post List
 $txt['activity_checker_no_post_list_title'] = 'Members with No Posts on Counted Boards List and With No Posts Anywhere';
 $txt['activity_checker_no_no_posts'] = 'There are no members who have never posted ever or never on a counted board.';
-$txt['activity_checker_mark_active'] = 'Mark Active';
+$txt['activity_checker_email_enabled'] = 'An Email Will Be Sent to Members Who are Deleted.';

@@ -17,7 +17,9 @@
 	<version>1.0</version>
 	
 	<install for="2.0 - 2.0.99,2.0 RC2,2.0 RC3,2.0 RC4,2.0 RC5">
+		<readme type="inline">This will install Activity Checker 1.0 for SMF 2.0.</readme>
 		<code>install-hooks.php</code>
+		<modification>modification.xml</modification>
 		<database type="file">install-database.php</database>
 		<require-dir name="Sources" destination="$boarddir" />
 		<require-dir name="Themes" destination="$boarddir" />
@@ -25,7 +27,9 @@
 	</install>
 	
 	<uninstall for="2.0 - 2.0.99,2.0 RC2,2.0 RC3,2.0 RC4,2.0 RC5">
+		<readme type="inline">This will uninstall Activity Checker 1.0 for SMF 2.0.</readme>
 		<code>install-hooks.php</code>
+		<modification reverse="true">modification.xml</modification>
 		<remove-file name="$sourcedir/ActivityChecker.php" />
 		<remove-file name="$sourcedir/Subs-ActivityChecker.php" />
 		<remove-file name="$themedir/ActivityChecker.template.php" />

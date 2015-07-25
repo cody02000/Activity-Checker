@@ -202,13 +202,18 @@ function activityChecker_inactiveList($return_config = false)
 			'additional_rows' => array(
 				array(
 					'position' => 'below_table_data',
+					'value' => $modSettings['activity_checker_inactive_pm_enable'] ? $txt['activity_checker_inactive_pm_enabled'] : '',
+					'style' => 'text-align: right;',
+				),
+				array(
+					'position' => 'below_table_data',
 					'value' => '
 						<input type="submit" name="mark_inactive" value="' . $txt['activity_checker_mark_inactive'] . '" class="button_submit" />',
 					'style' => 'text-align: right;',
 				),
 				array(
 					'position' => 'top_of_list',
-					'value' => $txt['activity_checker_cutoff'] . date('F d, Y, h:i:s',$posttime) . ' (' . $modSettings['activity_checker_inactive_time'] . $txt['activity_checker_weeks'] .')',
+					'value' => $txt['activity_checker_cutoff'] . date('F d, Y, h:i:s a',$posttime) . ' (' . $modSettings['activity_checker_inactive_time'] . $txt['activity_checker_weeks'] .')',
 				),
 			),
 		);
@@ -351,7 +356,7 @@ function activityChecker_activeList($return_config = false)
 				),
 				array(
 					'position' => 'top_of_list',
-					'value' => $txt['activity_checker_cutoff'] . date('F d, Y, h:i:s',$posttime) . ' (' . $modSettings['activity_checker_inactive_time'] . $txt['activity_checker_weeks'] .')',
+					'value' => $txt['activity_checker_cutoff'] . date('F d, Y, h:i:s a',$posttime) . ' (' . $modSettings['activity_checker_inactive_time'] . $txt['activity_checker_weeks'] .')',
 				),
 			),
 		);
@@ -474,6 +479,11 @@ function activityChecker_noPostsList() {
 			),
 			'additional_rows' => array(
 				array(
+						'position' => 'below_table_data',
+						'value' => $modSettings['activity_checker_email_enable'] ? $txt['activity_checker_email_enabled'] : '',
+						'style' => 'text-align: right;',
+				),
+				array(
 					'position' => 'below_table_data',
 					'value' => '<input type="submit" name="delete_members" value="' . $txt['admin_delete_members'] . '" onclick="return confirm(\'' . $txt['confirm_delete_members'] . '\');" class="button_submit" />',
 					'style' => 'text-align: right;',
@@ -574,6 +584,12 @@ function activityChecker_settings()
 				),
 			),
 		),
+		'additional_rows' => array(
+			array(
+				'position' => 'after_title',
+				'value' => $txt['activity_checker_membergroup_desc'],
+				),
+		)
 	);
 	createList($listOptions);
 
@@ -611,6 +627,12 @@ function activityChecker_settings()
 				),
 			),
 		),
+		'additional_rows' => array(
+			array(
+				'position' => 'after_title',
+				'value' => $txt['activity_checker_category_desc'],
+				),
+		)
 	);
 	createList($listOptions);
 }
@@ -731,11 +753,11 @@ function activityChecker_pm_email_settings ($return_config = false) {
 			array('select', 'activity_checker_inactive_pm_from', $from_options),
 			array('text', 'activity_checker_inactive_pm_bcc', 75),
 			array('text', 'activity_checker_inactive_pm_subject', 75),
-			array('large_text', 'activity_checker_inactive_pm_message', 10),
+			array('large_text', 'activity_checker_inactive_pm_message', 10, 'subtext'=>$txt['activity_checker_inactive_pm_message_desc']),
 						'',
 			array('check', 'activity_checker_email_enable'),
 			array('text', 'activity_checker_email_subject', 75),
-			array('large_text', 'activity_checker_email_message', 15, 'subtext'=>$txt['activity_checker_email_body_desc']),
+			array('large_text', 'activity_checker_email_message', 15, 'subtext'=>$txt['activity_checker_email_message_desc']),
 		);
 		
 		if ($return_config)

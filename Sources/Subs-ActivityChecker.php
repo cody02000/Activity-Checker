@@ -110,7 +110,7 @@ function list_getItemsActivityChecker($start, $items_per_page, $sort,$membergrou
 		$activity_checker[] = array(
 			'id_member' => $row['id_member'],
 			'member_link' => '<a href="' . $scripturl . '?action=profile;u=' . $row['id_member'] . '">' . $row['real_name'] . '</a>',
-			'last_post_link' => '<a href="' . $scripturl . '?topic=' . $row['id_topic'] . '.msg' . $row['id_msg'] . '#msg' . $row['id_msg'] . '">' . date('F d, Y, h:i:s',$row['poster_time']) . '</a>',
+			'last_post_link' => '<a href="' . $scripturl . '?topic=' . $row['id_topic'] . '.msg' . $row['id_msg'] . '#msg' . $row['id_msg'] . '">' . date('F d, Y, h:i:s a',$row['poster_time']) . '</a>',
 			'last_post_time' => $row['poster_time'],
 		);
 	}
@@ -143,7 +143,7 @@ function list_getItemsNoPostsChecker($start, $items_per_page, $sort)
 		$members[$row['id_member']] = array( 
 			'id_member' => $row['id_member'],
 			'member_link' => '<a href="' . $scripturl . '?action=profile;u=' . $row['id_member'] . '">' . $row['real_name'] . '</a>',
-			'last_post_link' => 'Never Posted: Registered on ' . date('F d, Y, h:i:s',$row['date_registered']),
+			'last_post_link' => 'Never Posted: Registered on ' . date('F d, Y, h:i:s a',$row['date_registered']),
 			'last_post_time' => $row['date_registered'],
 		);
 		$memberids[] = $row['id_member'];
@@ -165,7 +165,7 @@ function list_getItemsNoPostsChecker($start, $items_per_page, $sort)
 	
 	// Make a list of the 'lastest posts' for each member
 	while($row = $smcFunc['db_fetch_assoc']($result)) {
-		$members[$row['id_member']]['last_post_link'] = '<a href="' . $scripturl . '?topic=' . $row['id_topic'] . '.msg' . $row['id_msg'] . '#msg' . $row['id_msg'] . '">' . date('F d, Y, h:i:s',$row['poster_time']) . '</a>';
+		$members[$row['id_member']]['last_post_link'] = '<a href="' . $scripturl . '?topic=' . $row['id_topic'] . '.msg' . $row['id_msg'] . '#msg' . $row['id_msg'] . '">' . date('F d, Y, h:i:s a',$row['poster_time']) . '</a>';
 		$members[$row['id_member']]['last_post_time'] = $row['poster_time'];
 	}
 	// Free the db resource.
