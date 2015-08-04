@@ -26,7 +26,7 @@
 		<redirect url="$scripturl?action=admin;area=activity_checker" />
 	</install>
 	
-	<uninstall for="2.0 - 2.0.99,2.0 RC2,2.0 RC3,2.0 RC4,2.0 RC5">
+	<uninstall for="2.0 - 2.0.99">
 		<readme type="inline">This will uninstall Activity Checker 1.0 for SMF 2.0.</readme>
 		<code>install-hooks.php</code>
 		<modification reverse="true">modification.xml</modification>
