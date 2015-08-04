@@ -16,7 +16,7 @@
 	<type>modification</type>
 	<version>1.0</version>
 	
-	<install for="2.0 - 2.0.99,2.0 RC2,2.0 RC3,2.0 RC4,2.0 RC5">
+	<install for="2.0 - 2.0.99">
 		<readme type="inline">This will install Activity Checker 1.0 for SMF 2.0.</readme>
 		<code>install-hooks.php</code>
 		<modification>modification.xml</modification>
