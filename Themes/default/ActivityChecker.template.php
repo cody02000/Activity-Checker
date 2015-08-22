@@ -22,13 +22,13 @@ function template_general_settings()
 	 <dl class="settings">';
 
  echo '<dt>
-      <a id="activity_checker_inactive_time" href="' . $scripturl . '?action=helpadmin;help=' . $txt['activity_checker_inactive_time_help'] . '" onclick="return reqWin(this.href);" class="help"><img src="'. $settings['images_url'] .'/helptopics.gif" class="icon" alt="Help"></a> <span><label for="activity_checker_inactive_time">'.$txt['activity_checker_inactive_time'].'</label></span>
-    </dt>
-    <dd>
-      <input type="text" name="activity_checker_inactive_time" id="activity_checker_inactive_time"  value="' . $modSettings['activity_checker_inactive_time'] . '" class="input_text" />
-    </dd>';
+		<a id="activity_checker_inactive_time" href="' . $scripturl . '?action=helpadmin;help=' . $txt['activity_checker_inactive_time_help'] . '" onclick="return reqWin(this.href);" class="help"><img src="'. $settings['images_url'] .'/helptopics.gif" class="icon" alt="Help"></a> <span><label for="activity_checker_inactive_time">'.$txt['activity_checker_inactive_time'].'</label></span>
+	</dt>
+	<dd>
+		<input type="text" name="activity_checker_inactive_time" id="activity_checker_inactive_time"  value="' . $modSettings['activity_checker_inactive_time'] . '" class="input_text" />
+	</dd>';
 
-echo '	</dl>';
+echo '</dl>';
 
 	//	Show the list.
 	template_show_list('activity_checker_membergroup_selector');

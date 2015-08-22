@@ -22,21 +22,21 @@ if (!defined('SMF'))
  */
 function activityChecker_adminMenu(&$admin_areas)
 {
-  global $txt, $scripturl;
-  loadLanguage('ActivityChecker');
-  $admin_areas['members']['areas']['activity_checker']=array(
-    'label' => $txt['activity_checker_label'],
-    'file' => 'ActivityChecker.php',
-    'function' => 'activityChecker_adminMain',
-    'custom_url' => $scripturl . '?action=admin;area=activity_checker',
-    'icon' => 'calendar.gif',
-	'subsections' => array(
-        'settings' => array($txt['activity_checker_general'], 'manage_membergroups',),
-		'pm_email_settings' => array($txt['activity_checker_pm_email_settings'], 'manage_membergroups',),
-        'inactive_list' => array($txt['activity_checker_inactive_list'], 'manage_membergroups',),
-		'active_list' => array($txt['activity_checker_active_list'], 'manage_membergroups',),
-		'no_posts_list' => array($txt['activity_checker_no_posts_list'], 'manage_membergroups',),
-	)
+	global $txt, $scripturl;
+	loadLanguage('ActivityChecker');
+	$admin_areas['members']['areas']['activity_checker']=array(
+		'label' => $txt['activity_checker_label'],
+		'file' => 'ActivityChecker.php',
+		'function' => 'activityChecker_adminMain',
+		'custom_url' => $scripturl . '?action=admin;area=activity_checker',
+		'icon' => 'calendar.gif',
+		'subsections' => array(
+			'settings' => array($txt['activity_checker_general'], 'manage_membergroups',),
+			'pm_email_settings' => array($txt['activity_checker_pm_email_settings'], 'manage_membergroups',),
+			'inactive_list' => array($txt['activity_checker_inactive_list'], 'manage_membergroups',),
+			'active_list' => array($txt['activity_checker_active_list'], 'manage_membergroups',),
+			'no_posts_list' => array($txt['activity_checker_no_posts_list'], 'manage_membergroups',),
+		)
 	);
 }
 
