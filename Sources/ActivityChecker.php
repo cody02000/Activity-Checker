@@ -126,7 +126,12 @@ function activityChecker_inactiveList($return_config = false)
 				require_once($sourcedir . '/Subs-Post.php');
 				$recipients['to'] = $membernames;
 				$recipients['bcc'] = empty($modSettings['activity_checker_inactive_pm_bcc']) ? array() : explode(',', $modSettings['activity_checker_inactive_pm_bcc']);
-				$from = !empty($modSettings['activity_checker_inactive_pm_from']) ? unserialize($modSettings['activity_checker_inactive_pm_from']) : null;
+				if (!empty($modSettings['activity_checker_inactive_pm_from'])) {
+					list ($from['id'], $from['username'], $from['name']) =  explode(';', $modSettings['activity_checker_inactive_pm_from']);
+				}
+				else 
+					$from=null;
+				
 				sendpm($recipients, $subject, $message, true, $from, 0);
 			}
 		}
@@ -756,15 +761,9 @@ function activityChecker_pm_email_settings ($return_config = false) {
 	);
 	$from_options=array();
 	$from_options[0]='User Performing Check';
-	$from_final[0]=0;
 	while($row = $smcFunc['db_fetch_assoc']($request)) {
-		$option=array(
-			'id' => $row['id_member'],
-			'username' => $row['member_name'],
-			'name' => $row['real_name'],
-		);
-		$from_options[$row['id_member']] = $row['real_name'];
-		$from_final[$row['id_member']] = serialize($option);
+		$options=implode(';', array($row['id_member'],$row['member_name'],$row['real_name'],));
+		$from_options[$options] = $row['real_name'];
 	}
 	$smcFunc['db_free_result']($request);
 
@@ -791,7 +790,7 @@ function activityChecker_pm_email_settings ($return_config = false) {
 			$changes['activity_checker_inactive_pm_bcc'] = $_POST['activity_checker_inactive_pm_bcc'];
 			$changes['activity_checker_inactive_pm_subject'] = $_POST['activity_checker_inactive_pm_subject'];
 			$changes['activity_checker_inactive_pm_message'] = $_POST['activity_checker_inactive_pm_message'];
-			$changes['activity_checker_inactive_pm_from'] = isset($_POST['activity_checker_inactive_pm_from']) ? $from_final[$_POST['activity_checker_inactive_pm_from']] : null;
+			$changes['activity_checker_inactive_pm_from'] = isset($_POST['activity_checker_inactive_pm_from']) ? $_POST['activity_checker_inactive_pm_from'] : null;
 			$changes['activity_checker_email_enable'] = isset($_POST['activity_checker_email_enable']) ? $_POST['activity_checker_email_enable'] : 0;
 			$changes['activity_checker_email_subject'] = $_POST['activity_checker_email_subject'];
 			$changes['activity_checker_email_message'] = $_POST['activity_checker_email_message'];
