@@ -4,7 +4,7 @@
 *
 * @author Cody Williams
 * @copyright 2015
-* @version 1.2
+* @version 1.0.1
 * @license BSD 3-clause
 */
 
@@ -37,7 +37,7 @@ global $smcFunc, $db_prefix, $modSettings, $sourcedir, $boarddir, $settings, $db
   );
   
   $updates = array(
-    'activity_checker_version' => '1.0',
+    'activity_checker_version' => '1.0.1',
   );
   
   foreach ($defaults as $index => $value)
