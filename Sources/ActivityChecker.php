@@ -88,6 +88,8 @@ function activityChecker_inactiveList($return_config = false)
 	require_once($sourcedir . '/ManageServer.php');
 	
 	if (!empty($modSettings['activity_checker_inactive_group']) && !empty($modSettings['activity_checker_active_group']) && !empty($modSettings['activity_checker_inactive_time']) && !empty($modSettings['activity_checker_categories'])) {
+		//get membergroup names for logging and lists.  returns $activityChecker['group_names']
+		activityChecker_membergroupNames();
 		// Submitting something...
 		if (isset($_POST['mark_inactive']))
 		{
@@ -178,6 +180,14 @@ function activityChecker_inactiveList($return_config = false)
 							'reverse' => 'real_name DESC',
 						)
 					),
+					'groups' => array(
+						'header' => array(
+							'value' => $txt['activity_checker_groups_title'],
+						),
+						'data' => array(
+							'db' => 'groups',
+						),
+					),
 					'last_post' => array(
 						'header' => array(
 							'value' => $txt['last-post'],
@@ -258,6 +268,8 @@ function activityChecker_activeList($return_config = false)
 	global $sourcedir, $txt, $scripturl, $context, $settings, $sc, $modSettings, $smcFunc, $activityChecker;
 	require_once($sourcedir . '/ManageServer.php');
 	if (!empty($modSettings['activity_checker_inactive_group']) && !empty($modSettings['activity_checker_active_group']) && !empty($modSettings['activity_checker_inactive_time']) && !empty($modSettings['activity_checker_categories'])) {
+		//get membergroup names for logging and lists.  returns $activityChecker['group_names']
+		activityChecker_membergroupNames();
 		// Submitting something...
 		if (isset($_POST['mark_active']))
 		{
@@ -334,6 +346,14 @@ function activityChecker_activeList($return_config = false)
 							'reverse' => 'real_name DESC',
 						)
 					),
+					'groups' => array(
+						'header' => array(
+							'value' => $txt['activity_checker_groups_title'],
+						),
+						'data' => array(
+							'db' => 'groups',
+						),
+					),
 					'last_post' => array(
 						'header' => array(
 							'value' => $txt['last-post'],
@@ -409,6 +429,9 @@ function activityChecker_activeList($return_config = false)
 function activityChecker_noPostsList() {
 	global $sourcedir, $txt, $scripturl, $context, $settings, $sc, $modSettings, $smcFunc, $activityChecker,$mbname;
 	
+	//get membergroup names for logging and lists.  returns $activityChecker['group_names']
+	activityChecker_membergroupNames();
+		
 	if (isset($_POST['delete_members']) && !empty($_POST['member']))
 	{
 		checkSession();
@@ -473,6 +496,14 @@ function activityChecker_noPostsList() {
 					),
 					'data' => array(
 						'db' => 'member_link',
+					),
+				),
+				'groups' => array(
+					'header' => array(
+						'value' => $txt['activity_checker_groups_title'],
+					),
+					'data' => array(
+							'db' => 'groups',
 					),
 				),
 				'last_post' => array(

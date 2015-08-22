@@ -67,6 +67,7 @@ $txt['last-post'] = 'Last Post';
 $txt['activity_checker_member_name_title'] = 'Member Name';
 $txt['activity_checker_cutoff'] = 'Current activity cutoff date: ';
 $txt['activity_checker_weeks'] = ' Weeks';
+$txt['activity_checker_groups_title'] = 'Primary Group (Additional)';
 
 //Inactive List
 $txt['activity_checker_inactive_list_title'] = 'Inactive Member List';

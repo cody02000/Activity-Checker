@@ -4,7 +4,7 @@
 *
 * @author Cody Williams
 * @copyright 2015
-* @version 1.0
+* @version 1.0.1
 * @license BSD 3-clause
 */
 
@@ -52,7 +52,7 @@ function activityChecker_adminMenu(&$admin_areas)
  */
 function list_getItemsActivityChecker($start, $items_per_page, $sort,$membergroup,$boards,$time)
 {
-	global $smcFunc, $txt, $scripturl, $modSettings;
+	global $smcFunc, $txt, $scripturl, $modSettings, $activityChecker;
 	
 	$result = $smcFunc['db_query']('', '
 		SELECT id_member
@@ -107,11 +107,19 @@ function list_getItemsActivityChecker($start, $items_per_page, $sort,$membergrou
 	$activity_checker = array();
 	while ($row = $smcFunc['db_fetch_assoc']($request))
 	{
+		$additionalGroups=!empty($row['additional_groups']) ? explode(',',$row['additional_groups']) : null;
+		if (!empty($additionalGroups)) {
+			$addGroups=array();
+			foreach($additionalGroups as $groupID)
+				$addGroups[]=$activityChecker['group_names'][$groupID];
+			$additionalGroups=' (' . implode(', ', $addGroups) . ')';
+		}
 		$activity_checker[] = array(
 			'id_member' => $row['id_member'],
 			'member_link' => '<a href="' . $scripturl . '?action=profile;u=' . $row['id_member'] . '">' . $row['real_name'] . '</a>',
 			'last_post_link' => '<a href="' . $scripturl . '?topic=' . $row['id_topic'] . '.msg' . $row['id_msg'] . '#msg' . $row['id_msg'] . '">' . date('F d, Y, h:i:s a',$row['poster_time']) . '</a>',
 			'last_post_time' => $row['poster_time'],
+			'groups' => $activityChecker['group_names'][$row['id_group']] . $additionalGroups,
 		);
 	}
 	$smcFunc['db_free_result']($request);
@@ -129,10 +137,10 @@ function list_getItemsActivityChecker($start, $items_per_page, $sort,$membergrou
 
 function list_getItemsNoPostsChecker($start, $items_per_page, $sort)
 {
-	global $smcFunc, $txt, $scripturl, $modSettings;
+	global $smcFunc, $txt, $scripturl, $modSettings, $activityChecker;
 	
 	$result = $smcFunc['db_query']('', '
-		SELECT id_member, real_name, date_registered
+		SELECT id_member, real_name, date_registered, id_group, additional_groups
 			FROM {db_prefix}members
 			WHERE posts = 0
 			ORDER BY id_member'
@@ -140,11 +148,20 @@ function list_getItemsNoPostsChecker($start, $items_per_page, $sort)
 		$members = array();
 		$memberids = array();
 	while($row = $smcFunc['db_fetch_assoc']($result)) {
+		
+		$additionalGroups=!empty($row['additional_groups']) ? explode(',',$row['additional_groups']) : null;
+		if (!empty($additionalGroups)) {
+			$addGroups=array();
+			foreach($additionalGroups as $groupID)
+				$addGroups[]=$activityChecker['group_names'][$groupID];
+			$additionalGroups=' (' . implode(', ', $addGroups) . ')';
+		}
 		$members[$row['id_member']] = array( 
 			'id_member' => $row['id_member'],
 			'member_link' => '<a href="' . $scripturl . '?action=profile;u=' . $row['id_member'] . '">' . $row['real_name'] . '</a>',
 			'last_post_link' => 'Never Posted: Registered on ' . date('F d, Y, h:i:s a',$row['date_registered']),
 			'last_post_time' => $row['date_registered'],
+			'groups' => $activityChecker['group_names'][$row['id_group']] . $additionalGroups,
 		);
 		$memberids[] = $row['id_member'];
 	}
@@ -381,15 +398,6 @@ function activityChecker_removeMembersFromGroups($members, $groups = null, $perm
 
 function activityChecker_logPreviousGroups($members) {
 	global $smcFunc, $user_info, $activityChecker, $txt, $modSettings;
-		$request = $smcFunc['db_query']('', '
-		SELECT id_group, group_name
-		FROM {db_prefix}membergroups'
-	);
-	while ($row = $smcFunc['db_fetch_assoc']($request))
-		$activityChecker['group_names'][$row['id_group']] = $row['group_name'];
-	
-	$activityChecker['group_names'][0]=$txt['no_membergroup'];
-		$smcFunc['db_free_result']($request);
 	
 	$request = $smcFunc['db_query']('', '
 		SELECT id_member, id_group, additional_groups
@@ -501,4 +509,18 @@ function activityChecker_logMembergroupChange($members) {
 			array('id_action')
 		);
 		return true;
+}
+
+function activityChecker_membergroupNames() {
+	global $txt,$smcFunc,$activityChecker;
+	
+	$request = $smcFunc['db_query']('', '
+		SELECT id_group, group_name
+		FROM {db_prefix}membergroups'
+	);
+	while ($row = $smcFunc['db_fetch_assoc']($request))
+		$activityChecker['group_names'][$row['id_group']] = $row['group_name'];
+	
+	$activityChecker['group_names'][0]=$txt['no_membergroup'];
+		$smcFunc['db_free_result']($request);
 }
