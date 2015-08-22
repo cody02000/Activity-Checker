@@ -4,7 +4,7 @@
 *
 * @author Cody Williams
 * @copyright 2015
-* @version 1.0
+* @version 1.0.1
 * @license BSD 3-clause
 */
 
@@ -86,147 +86,158 @@ function activityChecker_inactiveList($return_config = false)
 {
 	global $sourcedir, $txt, $scripturl, $context, $settings, $sc, $modSettings, $smcFunc, $activityChecker;
 	require_once($sourcedir . '/ManageServer.php');
-	// Submitting something...
-	if (isset($_POST['mark_inactive']))
-	{
-		$result = $smcFunc['db_query']('', '
-			SELECT member_name, real_name
-			FROM {db_prefix}members
-			WHERE id_member IN ({array_int:members})
-			ORDER BY real_name',
-			array(
-				'members' => $_POST['member'],
-			)
-		);
-		
-		
-		$realnames = array();
-		$membernames = array();
-		while($row = $smcFunc['db_fetch_assoc']($result)) {
-			$realnames[] = $row['real_name'];
-			$membernames[] = $row['member_name'];
+	
+	if (!empty($modSettings['activity_checker_inactive_group']) && !empty($modSettings['activity_checker_active_group']) && !empty($modSettings['activity_checker_inactive_time']) && !empty($modSettings['activity_checker_categories'])) {
+		// Submitting something...
+		if (isset($_POST['mark_inactive']))
+		{
+			$result = $smcFunc['db_query']('', '
+				SELECT member_name, real_name
+				FROM {db_prefix}members
+				WHERE id_member IN ({array_int:members})
+				ORDER BY real_name',
+				array(
+					'members' => $_POST['member'],
+				)
+			);
+			
+			
+			$realnames = array();
+			$membernames = array();
+			while($row = $smcFunc['db_fetch_assoc']($result)) {
+				$realnames[] = $row['real_name'];
+				$membernames[] = $row['member_name'];
+			}
+			
+			// Free the db resource.
+			$smcFunc['db_free_result']($result);
+
+			checkSession();
+
+			activityChecker_logPreviousGroups($_POST['member']);
+			activityChecker_removeMembersFromGroups($_POST['member'], $modSettings['activity_checker_active_group']);
+			activityChecker_addMembersToGroup($_POST['member'], $modSettings['activity_checker_inactive_group'], 'auto');
+			activityChecker_logMembergroupChange($_POST['member']);
+			logAction('inactive_check',array('members' => implode(', ',$realnames), 'group_from' => $activityChecker['group_names'][$modSettings['activity_checker_active_group']], 'group_to' => $activityChecker['group_names'][$modSettings['activity_checker_inactive_group']]),'admin');
+			
+			if (!empty($modSettings['activity_checker_inactive_pm_enable']) && !empty($membernames)) {
+				$subject = empty($modSettings['activity_checker_inactive_pm_subject']) ? $txt['activity_checker_default_pm_subject'] : $modSettings['activity_checker_inactive_pm_subject'];
+				$message = empty($modSettings['activity_checker_inactive_pm_message']) ? $txt['activity_checker_default_pm_message'] : $modSettings['activity_checker_inactive_pm_message'];
+				require_once($sourcedir . '/Subs-Post.php');
+				$recipients['to'] = $membernames;
+				$recipients['bcc'] = empty($modSettings['activity_checker_inactive_pm_bcc']) ? array() : explode(',', $modSettings['activity_checker_inactive_pm_bcc']);
+				$from = !empty($modSettings['activity_checker_inactive_pm_from']) ? unserialize($modSettings['activity_checker_inactive_pm_from']) : null;
+				sendpm($recipients, $subject, $message, true, $from, 0);
+			}
 		}
-		
+
+			$categories = array_map('intval',explode(',',$modSettings['activity_checker_categories']));
+			$result = $smcFunc['db_query']('', '
+				SELECT id_board
+				FROM {db_prefix}boards
+				WHERE id_cat IN ({array_int:cats})',
+				array(
+					'cats' => $categories,
+				)
+			);
+			$boards = array();
+			while($row = $smcFunc['db_fetch_assoc']($result))
+				$boards[] = $row['id_board'];
 		// Free the db resource.
 		$smcFunc['db_free_result']($result);
-
-		checkSession();
-
-		activityChecker_logPreviousGroups($_POST['member']);
-		activityChecker_removeMembersFromGroups($_POST['member'], $modSettings['activity_checker_active_group']);
-		activityChecker_addMembersToGroup($_POST['member'], $modSettings['activity_checker_inactive_group'], 'auto');
-		activityChecker_logMembergroupChange($_POST['member']);
-		logAction('inactive_check',array('members' => implode(', ',$realnames), 'group_from' => $activityChecker['group_names'][$modSettings['activity_checker_active_group']], 'group_to' => $activityChecker['group_names'][$modSettings['activity_checker_inactive_group']]),'admin');
-		
-		if ($modSettings['activity_checker_inactive_pm_enable']) {
-			require_once($sourcedir . '/Subs-Post.php');
-			$recipients['to'] = $membernames;
-			$recipients['bcc'] = explode(',', $modSettings['activity_checker_inactive_pm_bcc']);
-			$from = $modSettings['activity_checker_inactive_pm_from'] !=0 ? unserialize($modSettings['activity_checker_inactive_pm_from']) : null;
-			sendpm($recipients, $modSettings['activity_checker_inactive_pm_subject'], $modSettings['activity_checker_inactive_pm_message'], false, $from, 0);
-		}
-	}
-
-		$categories = empty($modSettings['activity_checker_categories']) ? array(1) : array_map('intval',explode(',',$modSettings['activity_checker_categories']));
-		$result = $smcFunc['db_query']('', '
-			SELECT id_board
-			FROM {db_prefix}boards
-			WHERE id_cat IN ({array_int:cats})',
-			array(
-				'cats' => $categories,
-			)
-		);
-		$boards = array();
-		while($row = $smcFunc['db_fetch_assoc']($result))
-			$boards[] = $row['id_board'];
-	// Free the db resource.
-	$smcFunc['db_free_result']($result);
-	$posttime=time()-(60*60*24*(7*$modSettings['activity_checker_inactive_time']));
-		$listOptions = array(
-			'id' => 'activity_list',
-			'title' => $txt['activity_checker_inactive_list_title'],
-			'base_href' => $scripturl . '?action=admin;area=activity_checker',
-			'default_sort_col' => 'last_post',
-			'get_items' => array(
-				'function' => 'list_getItemsActivityChecker',
-				'params' => array(
-				(int) $modSettings['activity_checker_active_group'], 
-				$boards,
-				' <= ' . $posttime, //time()-(60*60*24*(7*$modSettings['activity_checker_inactive_time'])),
-				),
-			),
-			'no_items_label' => $txt['activity_checker_no_inactive'],
-			'columns' => array(
-				'name' => array(
-					'header' => array(
-						'value' => $txt['activity_checker_member_name_title'],
-					),
-					'data' => array(
-						'db' => 'member_link',
-					),
-					'sort' => array(
-						'default' => 'real_name',
-						'reverse' => 'real_name DESC',
-					)
-				),
-				'last_post' => array(
-					'header' => array(
-						'value' => $txt['last-post'],
-					),
-					'data' => array(
-						'db' => 'last_post_link',
-					),
-					'sort' => array(
-						'default' => 'msg.poster_time',
-						'reverse' => 'msg.poster_time DESC',
+		$posttime=time()-(60*60*24*(7*$modSettings['activity_checker_inactive_time']));
+			$listOptions = array(
+				'id' => 'activity_list',
+				'title' => $txt['activity_checker_inactive_list_title'],
+				'base_href' => $scripturl . '?action=admin;area=activity_checker',
+				'default_sort_col' => 'last_post',
+				'get_items' => array(
+					'function' => 'list_getItemsActivityChecker',
+					'params' => array(
+					(int) $modSettings['activity_checker_active_group'], 
+					$boards,
+					' <= ' . $posttime, //time()-(60*60*24*(7*$modSettings['activity_checker_inactive_time'])),
 					),
 				),
-				'check' => array(
-					'header' => array(
-						'value' => '<input type="checkbox" onclick="invertAll(this, this.form);" class="input_check" />',
-					),
-					'data' => array(
-						'sprintf' => array(
-							'format' => '<input type="checkbox" name="member[]" value="%1$d" class="input_check" />',
-							'params' => array(
-								'id_member' => false,
-							),
+				'no_items_label' => $txt['activity_checker_no_inactive'],
+				'columns' => array(
+					'name' => array(
+						'header' => array(
+							'value' => $txt['activity_checker_member_name_title'],
 						),
-						'style' => 'text-align: center',
+						'data' => array(
+							'db' => 'member_link',
+						),
+						'sort' => array(
+							'default' => 'real_name',
+							'reverse' => 'real_name DESC',
+						)
+					),
+					'last_post' => array(
+						'header' => array(
+							'value' => $txt['last-post'],
+						),
+						'data' => array(
+							'db' => 'last_post_link',
+						),
+						'sort' => array(
+							'default' => 'msg.poster_time',
+							'reverse' => 'msg.poster_time DESC',
+						),
+					),
+					'check' => array(
+						'header' => array(
+							'value' => '<input type="checkbox" onclick="invertAll(this, this.form);" class="input_check" />',
+						),
+						'data' => array(
+							'sprintf' => array(
+								'format' => '<input type="checkbox" name="member[]" value="%1$d" class="input_check" />',
+								'params' => array(
+									'id_member' => false,
+								),
+							),
+							'style' => 'text-align: center',
+						),
 					),
 				),
-			),
-			'form' => array(
-				'href' => $scripturl . '?action=admin;area=activity_checker;sa=inactive_list',
-			),
-			'additional_rows' => array(
-				array(
-					'position' => 'below_table_data',
-					'value' => $modSettings['activity_checker_inactive_pm_enable'] ? $txt['activity_checker_inactive_pm_enabled'] : '',
-					'style' => 'text-align: right;',
+				'form' => array(
+					'href' => $scripturl . '?action=admin;area=activity_checker;sa=inactive_list',
 				),
-				array(
-					'position' => 'below_table_data',
-					'value' => '
-						<input type="submit" name="mark_inactive" value="' . $txt['activity_checker_mark_inactive'] . '" class="button_submit" />',
-					'style' => 'text-align: right;',
+				'additional_rows' => array(
+					array(
+						'position' => 'below_table_data',
+						'value' => !empty($modSettings['activity_checker_inactive_pm_enable']) ? $txt['activity_checker_inactive_pm_enabled'] : '',
+						'style' => 'text-align: right;',
+					),
+					array(
+						'position' => 'below_table_data',
+						'value' => '
+							<input type="submit" name="mark_inactive" value="' . $txt['activity_checker_mark_inactive'] . '" class="button_submit" />',
+						'style' => 'text-align: right;',
+					),
+					array(
+						'position' => 'top_of_list',
+						'value' => $txt['activity_checker_cutoff'] . date('F d, Y, h:i:s a',$posttime) . ' (' . $modSettings['activity_checker_inactive_time'] . $txt['activity_checker_weeks'] .')',
+					),
 				),
-				array(
-					'position' => 'top_of_list',
-					'value' => $txt['activity_checker_cutoff'] . date('F d, Y, h:i:s a',$posttime) . ' (' . $modSettings['activity_checker_inactive_time'] . $txt['activity_checker_weeks'] .')',
-				),
-			),
-		);
+			);
 
-		require_once($sourcedir . '/Subs-List.php');
-		createList($listOptions);
-		
+			require_once($sourcedir . '/Subs-List.php');
+			createList($listOptions);
+			
+			$context['page_title'] = $txt['activity_checker_inactive_list'];
+			//	Set up the variables needed by the template.
+			$context['default_list'] = 'activity_list';
+			loadTemplate('ActivityChecker');
+			
+			$context['sub_template'] = 'inactive';
+	}
+	else {
 		$context['page_title'] = $txt['activity_checker_inactive_list'];
-		//	Set up the variables needed by the template.
-		$context['default_list'] = 'activity_list';
 		loadTemplate('ActivityChecker');
-		
-		$context['sub_template'] = 'inactive';
+			
+		$context['sub_template'] = 'not_enabled';
+	}
 }
 
 /**
@@ -241,133 +252,141 @@ function activityChecker_activeList($return_config = false)
 {
 	global $sourcedir, $txt, $scripturl, $context, $settings, $sc, $modSettings, $smcFunc, $activityChecker;
 	require_once($sourcedir . '/ManageServer.php');
-	// Submitting something...
-	if (isset($_POST['mark_active']))
-	{
-		$result = $smcFunc['db_query']('', '
-			SELECT member_name, real_name
-			FROM {db_prefix}members
-			WHERE id_member IN ({array_int:members})
-			ORDER BY real_name',
-			array(
-				'members' => $_POST['member'],
-			)
-		);
-		
-		
-		$realnames = array();
-		$membernames = array();
-		while($row = $smcFunc['db_fetch_assoc']($result)) {
-			$realnames[] = $row['real_name'];
-			$membernames[] = $row['member_name'];
+	if (!empty($modSettings['activity_checker_inactive_group']) && !empty($modSettings['activity_checker_active_group']) && !empty($modSettings['activity_checker_inactive_time']) && !empty($modSettings['activity_checker_categories'])) {
+		// Submitting something...
+		if (isset($_POST['mark_active']))
+		{
+			$result = $smcFunc['db_query']('', '
+				SELECT member_name, real_name
+				FROM {db_prefix}members
+				WHERE id_member IN ({array_int:members})
+				ORDER BY real_name',
+				array(
+					'members' => $_POST['member'],
+				)
+			);
+			
+			
+			$realnames = array();
+			$membernames = array();
+			while($row = $smcFunc['db_fetch_assoc']($result)) {
+				$realnames[] = $row['real_name'];
+				$membernames[] = $row['member_name'];
+			}
+			
+			// Free the db resource.
+			$smcFunc['db_free_result']($result);
+			
+			checkSession();
+
+			activityChecker_logPreviousGroups($_POST['member']);
+			activityChecker_removeMembersFromGroups($_POST['member'], $modSettings['activity_checker_inactive_group']);
+			activityChecker_addMembersToGroup($_POST['member'], $modSettings['activity_checker_active_group'], 'only_additional');
+			activityChecker_logMembergroupChange($_POST['member']);
+			logAction('active_check',array('members' => implode(', ',$realnames), 'group_from' => $activityChecker['group_names'][$modSettings['activity_checker_inactive_group']], 'group_to' => $activityChecker['group_names'][$modSettings['activity_checker_active_group']]),'admin');
 		}
-		
+
+			$categories = array_map('intval',explode(',',$modSettings['activity_checker_categories']));
+			$result = $smcFunc['db_query']('', '
+				SELECT id_board
+				FROM {db_prefix}boards
+				WHERE id_cat IN ({array_int:cats})',
+				array(
+					'cats' => $categories,
+				)
+			);
+			$boards = array();
+			while($row = $smcFunc['db_fetch_assoc']($result))
+				$boards[] = $row['id_board'];
 		// Free the db resource.
 		$smcFunc['db_free_result']($result);
-		
-		checkSession();
-
-		activityChecker_logPreviousGroups($_POST['member']);
-		activityChecker_removeMembersFromGroups($_POST['member'], $modSettings['activity_checker_inactive_group']);
-		activityChecker_addMembersToGroup($_POST['member'], $modSettings['activity_checker_active_group'], 'only_additional');
-		activityChecker_logMembergroupChange($_POST['member']);
-		logAction('active_check',array('members' => implode(', ',$realnames), 'group_from' => $activityChecker['group_names'][$modSettings['activity_checker_inactive_group']], 'group_to' => $activityChecker['group_names'][$modSettings['activity_checker_active_group']]),'admin');
-	}
-
-		$categories = empty($modSettings['activity_checker_categories']) ? array(1) : array_map('intval',explode(',',$modSettings['activity_checker_categories']));
-		$result = $smcFunc['db_query']('', '
-			SELECT id_board
-			FROM {db_prefix}boards
-			WHERE id_cat IN ({array_int:cats})',
-			array(
-				'cats' => $categories,
-			)
-		);
-		$boards = array();
-		while($row = $smcFunc['db_fetch_assoc']($result))
-			$boards[] = $row['id_board'];
-	// Free the db resource.
-	$smcFunc['db_free_result']($result);
-		$posttime=time()-(60*60*24*(7*$modSettings['activity_checker_inactive_time']));
-		
-		$listOptions = array(
-			'id' => 'activity_list',
-			'title' => $txt['activity_checker_active_list_title'],
-			'base_href' => $scripturl . '?action=admin;area=activity_checker',
-			'default_sort_col' => 'last_post',
-			'get_items' => array(
-				'function' => 'list_getItemsActivityChecker',
-				'params' => array(
-				(int) $modSettings['activity_checker_inactive_group'], 
-				$boards,
-				' >= ' . $posttime,
-				),
-			),
-			'no_items_label' => $txt['activity_checker_no_active'],
-			'columns' => array(
-				'name' => array(
-					'header' => array(
-						'value' => $txt['activity_checker_member_name_title'],
-					),
-					'data' => array(
-						'db' => 'member_link',
-					),
-					'sort' => array(
-						'default' => 'real_name',
-						'reverse' => 'real_name DESC',
-					)
-				),
-				'last_post' => array(
-					'header' => array(
-						'value' => $txt['last-post'],
-					),
-					'data' => array(
-						'db' => 'last_post_link',
-					),
-					'sort' => array(
-						'default' => 'msg.poster_time',
-						'reverse' => 'msg.poster_time DESC',
+			$posttime=time()-(60*60*24*(7*$modSettings['activity_checker_inactive_time']));
+			
+			$listOptions = array(
+				'id' => 'activity_list',
+				'title' => $txt['activity_checker_active_list_title'],
+				'base_href' => $scripturl . '?action=admin;area=activity_checker',
+				'default_sort_col' => 'last_post',
+				'get_items' => array(
+					'function' => 'list_getItemsActivityChecker',
+					'params' => array(
+					(int) $modSettings['activity_checker_inactive_group'], 
+					$boards,
+					' >= ' . $posttime,
 					),
 				),
-				'check' => array(
-					'header' => array(
-						'value' => '<input type="checkbox" onclick="invertAll(this, this.form);" class="input_check" />',
-					),
-					'data' => array(
-						'sprintf' => array(
-							'format' => '<input type="checkbox" name="member[]" value="%1$d" class="input_check" />',
-							'params' => array(
-								'id_member' => false,
-							),
+				'no_items_label' => $txt['activity_checker_no_active'],
+				'columns' => array(
+					'name' => array(
+						'header' => array(
+							'value' => $txt['activity_checker_member_name_title'],
 						),
-						'style' => 'text-align: center',
+						'data' => array(
+							'db' => 'member_link',
+						),
+						'sort' => array(
+							'default' => 'real_name',
+							'reverse' => 'real_name DESC',
+						)
+					),
+					'last_post' => array(
+						'header' => array(
+							'value' => $txt['last-post'],
+						),
+						'data' => array(
+							'db' => 'last_post_link',
+						),
+						'sort' => array(
+							'default' => 'msg.poster_time',
+							'reverse' => 'msg.poster_time DESC',
+						),
+					),
+					'check' => array(
+						'header' => array(
+							'value' => '<input type="checkbox" onclick="invertAll(this, this.form);" class="input_check" />',
+						),
+						'data' => array(
+							'sprintf' => array(
+								'format' => '<input type="checkbox" name="member[]" value="%1$d" class="input_check" />',
+								'params' => array(
+									'id_member' => false,
+								),
+							),
+							'style' => 'text-align: center',
+						),
 					),
 				),
-			),
-			'form' => array(
-				'href' => $scripturl . '?action=admin;area=activity_checker;sa=active_list',
-			),
-			'additional_rows' => array(
-				array(
-					'position' => 'below_table_data',
-					'value' => '
-						<input type="submit" name="mark_active" value="' . $txt['activity_checker_mark_active'] . '" class="button_submit" />',
-					'style' => 'text-align: right;',
+				'form' => array(
+					'href' => $scripturl . '?action=admin;area=activity_checker;sa=active_list',
 				),
-				array(
-					'position' => 'top_of_list',
-					'value' => $txt['activity_checker_cutoff'] . date('F d, Y, h:i:s a',$posttime) . ' (' . $modSettings['activity_checker_inactive_time'] . $txt['activity_checker_weeks'] .')',
+				'additional_rows' => array(
+					array(
+						'position' => 'below_table_data',
+						'value' => '
+							<input type="submit" name="mark_active" value="' . $txt['activity_checker_mark_active'] . '" class="button_submit" />',
+						'style' => 'text-align: right;',
+					),
+					array(
+						'position' => 'top_of_list',
+						'value' => $txt['activity_checker_cutoff'] . date('F d, Y, h:i:s a',$posttime) . ' (' . $modSettings['activity_checker_inactive_time'] . $txt['activity_checker_weeks'] .')',
+					),
 				),
-			),
-		);
-		
-		require_once($sourcedir . '/Subs-List.php');
-		createList($listOptions);
-		
-		$context['page_title'] = $txt['activity_checker_active_list'];
-		//	Set up the variables needed by the template.
-		$context['default_list'] = 'activity_list';		
-		$context['sub_template'] = 'inactive';
+			);
+			
+			require_once($sourcedir . '/Subs-List.php');
+			createList($listOptions);
+			
+			$context['page_title'] = $txt['activity_checker_active_list'];
+			//	Set up the variables needed by the template.
+			$context['default_list'] = 'activity_list';		
+			$context['sub_template'] = 'inactive';
+	}
+	else {
+		$context['page_title'] = $txt['activity_checker_inactive_list'];
+		loadTemplate('ActivityChecker');
+			
+		$context['sub_template'] = 'not_enabled';
+	}
 }
 
 /**
@@ -396,7 +415,7 @@ function activityChecker_noPostsList() {
 				'members' => $_POST['member'],
 			)
 		);
-		if ($modSettings['activity_checker_email_enable']) {
+		if (!empty($modSettings['activity_checker_email_enable'])) {
 			$member_info = array();
 			// Fill the info array.
 			while ($row = $smcFunc['db_fetch_assoc']($request))
@@ -415,9 +434,9 @@ function activityChecker_noPostsList() {
 			
 			// Send email telling them their account was deleted due to never posting.
 			$replacements = array(
-					'EMAILSUBJECT' => $modSettings['activity_checker_email_subject'],
-					'EMAILBODY' => $modSettings['activity_checker_email_message'],
-					'SENDERNAME' => $mbname,
+					'EMAILSUBJECT' => empty($modSettings['activity_checker_email_subject']) ? $txt['activity_checker_default_email_subject'] : $modSettings['activity_checker_email_subject'],
+					'EMAILBODY' => empty($modSettings['activity_checker_email_message']) ? $txt['activity_checker_default_email_message'] : $modSettings['activity_checker_email_message'],
+					'FORUM' => $mbname,
 					);
 			foreach ($member_info as $member)
 			{
@@ -480,7 +499,7 @@ function activityChecker_noPostsList() {
 			'additional_rows' => array(
 				array(
 						'position' => 'below_table_data',
-						'value' => $modSettings['activity_checker_email_enable'] ? $txt['activity_checker_email_enabled'] : '',
+						'value' => !empty($modSettings['activity_checker_email_enable']) ? $txt['activity_checker_email_enabled'] : '',
 						'style' => 'text-align: right;',
 				),
 				array(
@@ -653,6 +672,10 @@ function list_getActivityCheckerSettings($start, $items_per_page, $sort, $groups
 	$list = array();
 
 	if ($groups) {
+		if (!isset($modSettings['activity_checker_active_group']))
+			$modSettings['activity_checker_active_group'] = 0;
+		if (!isset($modSettings['activity_checker_inactive_group']))
+			$modSettings['activity_checker_inactive_group'] = 0;
 		// Load all the fields.
 		$request = $smcFunc['db_query']('', '
 			SELECT id_group, group_name, description

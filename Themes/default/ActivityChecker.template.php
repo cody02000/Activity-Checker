@@ -4,7 +4,7 @@
 *
 * @author Cody Williams
 * @copyright 2015
-* @version 1.0
+* @version 1.0.1
 * @license BSD 3-clause
 */
 
@@ -61,4 +61,21 @@ function template_no_posts()
 function template_pm_email_settings() {
 	//	Show the confiq_vars.
 	template_show_settings();
+}
+
+function template_not_enabled()
+{
+	global $modSettings,$txt;
+	if (empty($modSettings['activity_checker_inactive_group'])) {
+		echo '<p class=error>' . $txt['activity_checker_error']['no_inactive_group'] . '</p>';
+	}
+	if (empty($modSettings['activity_checker_active_group'])) {
+		echo '<p class=error>' . $txt['activity_checker_error']['no_active_group'] . '</p>';
+	}
+	if (empty($modSettings['activity_checker_inactive_time'])) {
+		echo '<p class=error>' . $txt['activity_checker_error']['no_inactive_time'] . '</p>';
+	}
+	if (empty($modSettings['activity_checker_categories'])) {
+		echo '<p class=error>' . $txt['activity_checker_error']['no_categories'] . '</p>';
+	}
 }

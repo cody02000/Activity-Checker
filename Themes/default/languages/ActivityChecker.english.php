@@ -4,7 +4,7 @@
 *
 * @author Cody Williams
 * @copyright 2015
-* @version 1.0
+* @version 1.0.1
 * @license BSD 3-clause
 */
 // First of all, we make sure we are accessing the source file via SMF so that people can not directly access the file. 
@@ -39,7 +39,9 @@ $txt['activity_checker_membergroup_desc'] = 'Select the active and inactive grou
 <ul>
 <li>The <span style="font-style: italic;">' . $txt['activity_checker_inactive_list'] . '</span> checks for inactive members in the active group.</li>
 <li>The <span style="font-style: italic;">' . $txt['activity_checker_active_list'] . '</span> checks for active members in the inactive group.</li>
-</ul>';
+</ul>
+
+The membergroup options do not include protected type groups, the default admin and moderators group, and post count based groups.';
 $txt['activity_checker_category_desc'] = 'Select the categories to check for the activity checks to check for posts in.';
 
 //Category settings
@@ -57,7 +59,7 @@ $txt['activity_checker_inactive_pm_message_desc'] = 'This is the Personal Messag
 $txt['activity_checker_email_enable'] = 'Send Email to members who have been deleted via the No Posts List.';
 $txt['activity_checker_email_subject'] = 'Member Deleted Email Subject:';
 $txt['activity_checker_email_message'] = 'Member Deleted Email Message:';
-$txt['activity_checker_email_message_desc'] = 'This is the email message that is sent to the user when their account is deleted. To insert the username of the user just insert "<b>{RECPNAME}</b>".  For forum name use "<b>{forumname}</b>".';
+$txt['activity_checker_email_message_desc'] = 'This is the email message that is sent to the user when their account is deleted. To insert the username of the user just insert "<b>{RECPNAME}</b>".  For forum name use "<b>{FORUM}</b>".';
 
 //List Pages
 $txt['no_membergroup'] = 'No primary membergroup';
@@ -82,3 +84,15 @@ $txt['activity_checker_mark_active'] = 'Move Selected Members to Active Group';
 $txt['activity_checker_no_post_list_title'] = 'Members with No Posts on Counted Boards List and With No Posts Anywhere';
 $txt['activity_checker_no_no_posts'] = 'There are no members who have never posted ever or never on a counted board.';
 $txt['activity_checker_email_enabled'] = 'An Email Will Be Sent to Members Who are Deleted.';
+
+//Errors
+$txt['activity_checker_error']['no_active_group'] = 'No active group set. <a href="' . $scripturl . '?action=admin;area=activity_checker;sa=settings" title="Activity Checker Settings">Please set active group</a> to use Activity Checker.';
+$txt['activity_checker_error']['no_inactive_group'] = 'No inactive group set.  <a href="' . $scripturl . '?action=admin;area=activity_checker;sa=settings" title="Activity Checker Settings">Please set inactive group</a> to use Activity Checker.';
+$txt['activity_checker_error']['no_inactive_time'] = 'No inactive after number of weeks set.  <a href="' . $scripturl . '?action=admin;area=activity_checker;sa=settings" title="Activity Checker Settings">Please set number of weeks</a> to use Actiivty Checker.';
+$txt['activity_checker_error']['no_categories'] = 'No categories are set to be checked for activity.  <a href="' . $scripturl . '?action=admin;area=activity_checker;sa=settings" title="Activity Checker Settings">Please set categories to check for activity in</a> to use Activity Checker.';
+
+//default PM and Email
+$txt['activity_checker_default_pm_subject'] = 'Account Inactive';
+$txt['activity_checker_default_pm_message'] = 'This account has been moved to the inactive group.';
+$txt['activity_checker_default_email_subject'] = 'Account Deleted';
+$txt['activity_checker_default_email_message'] = 'This account {RECPNAME} has been deleted due to lack of posts from {FORUM}.';
