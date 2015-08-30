@@ -1,11 +1,11 @@
 # Activity-Checker
 
-This is a mod for simple machines forum that checks whether members are active or not.
+This is a mod for simple machines forum that checks whether members are active or not.  The lists will not work without setting the active and inactive groups on the settings page.
 
 ##Inactivity Checker
 Checks if active members have made a post in the selected category in settings within the number of weeks set in settings.
 
-It will, if enabled, then send a personal message to the member with the specified message and subject and optionally from a specified account.
+If enabled, a personal message will be sent to the member(s) with the specified message and subject from the current account running the inactivity check or the specified account.  Subject, Message, and Sender are set on the PM and Email settings page
 
 ##Activity Checker
 Checks if inactive members have made a post in the selected category within the number of weeks set.
