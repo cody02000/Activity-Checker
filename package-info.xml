@@ -6,7 +6,7 @@
 *
 * @author Cody Williams
 * @copyright 2015
-* @version 1.0
+* @version 1.0.2
 * @license BSD 3-clause
 */
 -->
@@ -14,10 +14,10 @@
 	<id>cody:ActivityChecker</id>
 	<name>Activity Checker</name>
 	<type>modification</type>
-	<version>1.0</version>
+	<version>1.0.2</version>
 	
 	<install for="2.0 - 2.0.99">
-		<readme type="inline">This will install Activity Checker 1.0 for SMF 2.0.</readme>
+		<readme type="inline">This will install Activity Checker 1.0.2 for SMF 2.0.</readme>
 		<code>install-hooks.php</code>
 		<modification>modification.xml</modification>
 		<database type="file">install-database.php</database>
@@ -27,7 +27,7 @@
 	</install>
 	
 	<uninstall for="2.0 - 2.0.99">
-		<readme type="inline">This will uninstall Activity Checker 1.0 for SMF 2.0.</readme>
+		<readme type="inline">This will uninstall Activity Checker 1.0.2 for SMF 2.0.</readme>
 		<code>install-hooks.php</code>
 		<modification reverse="true">modification.xml</modification>
 		<remove-file name="$sourcedir/ActivityChecker.php" />

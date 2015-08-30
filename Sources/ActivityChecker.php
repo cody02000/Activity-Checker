@@ -4,7 +4,7 @@
 *
 * @author Cody Williams
 * @copyright 2015
-* @version 1.0.1
+* @version 1.0.2
 * @license BSD 3-clause
 */
 
@@ -779,15 +779,18 @@ function activityChecker_pm_email_settings ($return_config = false) {
 		while($row = $smcFunc['db_fetch_assoc']($request)) {
 			$membergroups[] = $row['id_group'];
 		}
+		print_r($membergroups);
 		
 	$smcFunc['db_free_result']($request);
 	$request = $smcFunc['db_query']('', '
 			SELECT id_member, member_name, real_name
 			FROM {db_prefix}members
 			WHERE id_group IN ({array_int:membergroups})
+			OR (FIND_IN_SET({raw:additional_groups_implode}, additional_groups) != 0)
 			ORDER BY real_name',
 			array(
 				'membergroups' => $membergroups,
+				'additional_groups_implode' => implode(', additional_groups) != 0 OR FIND_IN_SET(', $membergroups),
 			)
 	);
 	$from_options=array();
