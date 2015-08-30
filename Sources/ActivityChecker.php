@@ -779,7 +779,6 @@ function activityChecker_pm_email_settings ($return_config = false) {
 		while($row = $smcFunc['db_fetch_assoc']($request)) {
 			$membergroups[] = $row['id_group'];
 		}
-		print_r($membergroups);
 		
 	$smcFunc['db_free_result']($request);
 	$request = $smcFunc['db_query']('', '
