@@ -2,13 +2,13 @@
 Activity Checker, a mod for Simple Machines Forum, checks whether a member is inactive or active based on usergroup and last post.
 
 ##Features
-*Newly Inactive Member List - Members who are in the active group but are currently inactive.
-*Newly Active Member List - Members who are in the inactive group but are currently active.
-*Never Posted Member List - Members in any group who have a post count of 0.  If they have posted in a board that does not count posts, it will display the last such post.
-*Send PM to users moved to the inactive group.  Specify Subject, Message, BCC recipients and specify which account the PM is sent from (account must have the ability to manage membergroups to show up on the list.)
-*Send Email to users removed via the Never Posted List.  Set the message and subject.
-*Define what amount of time, in weeks, is considered inactive.
-*Check for post activity by Category
+* Newly Inactive Member List - Members who are in the active group but are currently inactive.
+* Newly Active Member List - Members who are in the inactive group but are currently active.
+* Never Posted Member List - Members in any group who have a post count of 0.  If they have posted in a board that does not count posts, it will display the last such post.
+* Send PM to users moved to the inactive group.  Specify Subject, Message, BCC recipients and specify which account the PM is sent from (account must have the ability to manage membergroups to show up on the list.)
+* Send Email to users removed via the Never Posted List.  Set the message and subject.
+* Define what amount of time, in weeks, is considered inactive.
+* Check for post activity by Category
 
 ##After Installing:
 For the mod to work, active and inactive membergroups must be specified in the general settings.  As well as which categories to check.  PM to Inactive Members and Email to Deleted Members must be enabled to use those features.  If a subject and message are not specified in the settings, a default subject and message will be used.
