@@ -4,7 +4,7 @@
 *
 * @author Cody Williams
 * @copyright 2015
-* @version 1.0
+* @version 1.0.3
 * @license BSD 3-clause
 */
 
@@ -14,8 +14,6 @@ if (file_exists(dirname(__FILE__) . '/SSI.php') && !defined('SMF'))
 // Hmm... no SSI.php and no SMF?
 elseif (!defined('SMF'))
   die('<b>Error:</b> Cannot install - please verify you put this in the same place as SMF\'s index.php.');
-  
-global $smcFunc, $db_prefix, $modSettings, $sourcedir, $boarddir, $settings, $db_package_log, $package_cache;
 
 // Define the hooks
 $hook_functions = array(

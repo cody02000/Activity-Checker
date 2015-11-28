@@ -4,7 +4,7 @@
 *
 * @author Cody Williams
 * @copyright 2015
-* @version 1.0.1
+* @version 1.0.3
 * @license BSD 3-clause
 */
 
@@ -17,7 +17,7 @@ elseif (!defined('SMF'))
 	exit('<b>Error:</b> Cannot install - please verify you put this in the same place as SMF\'s index.php.');
 	
 
-global $smcFunc, $db_prefix, $modSettings, $sourcedir, $boarddir, $settings, $db_package_log, $package_cache;
+global $modSettings;
 
   $defaults = array(
     'activity_checker_cats'=> 0,
@@ -37,7 +37,7 @@ global $smcFunc, $db_prefix, $modSettings, $sourcedir, $boarddir, $settings, $db
   );
   
   $updates = array(
-    'activity_checker_version' => '1.0.1',
+    'activity_checker_version' => '1.0.3',
   );
   
   foreach ($defaults as $index => $value)
