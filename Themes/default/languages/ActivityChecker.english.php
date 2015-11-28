@@ -4,7 +4,7 @@
 *
 * @author Cody Williams
 * @copyright 2015
-* @version 1.0.1
+* @version 1.0.3
 * @license BSD 3-clause
 */
 // First of all, we make sure we are accessing the source file via SMF so that people can not directly access the file. 
@@ -29,6 +29,7 @@ $txt['activity_checker_pm_email_desc'] = 'Settings for sending a PM when a membe
 $txt['activity_checker_inactive_time'] = 'Inactive Weeks Threshold';
 $txt['activity_checker_inactive_time_help'] = 'Inactive time is set by number of weeks, enter any number.';
 $txt['activity_checker_settings'] = 'Activity Checker Settings';
+$txt['activity_checker_save_general_settings'] = 'Save Settings';
 //Membergroup Settings
 $txt['activity_checker_membergroup_settings_title'] = 'Membergroups Settings';
 $txt['activity_checker_membergroup_col'] = 'Membergroup';
