@@ -4,7 +4,7 @@
 *
 * @author Cody Williams
 * @copyright 2015
-* @version 1.0.2
+* @version 1.0.3
 * @license BSD 3-clause
 */
 
@@ -163,7 +163,7 @@ function activityChecker_inactiveList($return_config = false)
 					'params' => array(
 					(int) $modSettings['activity_checker_active_group'], 
 					$boards,
-					' <= ' . $posttime, //time()-(60*60*24*(7*$modSettings['activity_checker_inactive_time'])),
+					' <= ' . $posttime,
 					),
 				),
 				'no_items_label' => $txt['activity_checker_no_inactive'],

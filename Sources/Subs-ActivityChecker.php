@@ -4,7 +4,7 @@
 *
 * @author Cody Williams
 * @copyright 2015
-* @version 1.0.1
+* @version 1.0.3
 * @license BSD 3-clause
 */
 
@@ -167,7 +167,9 @@ function list_getItemsNoPostsChecker($start, $items_per_page, $sort)
 	}
 	
 	$smcFunc['db_free_result']($result);
-	
+	if (empty($memberids)) {
+		return $members;
+	}
 	// Query to make a list of the 'last post' for each member.
 	$result = $smcFunc['db_query']('', '
 		SELECT MAX(id_msg) AS id_msg, id_member, id_topic, poster_time
