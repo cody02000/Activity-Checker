@@ -4,13 +4,13 @@
 *
 * @author Cody Williams
 * @copyright 2015
-* @version 1.0.3
+* @version 1.0.4
 * @license BSD 3-clause
 */
 // First of all, we make sure we are accessing the source file via SMF so that people can not directly access the file. 
 if (!defined('SMF'))
-  die('Hack Attempt...');
-
+	die('Hack Attempt...');
+global $scripturl;
 //Menu and Descriptions  
 $txt['activity_checker_label'] = 'Activity Checker';
 $txt['activity_checker_desc'] = 'Check when the last post of members were and change their membergroup.';
