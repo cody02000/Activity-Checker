@@ -4,7 +4,7 @@
 *
 * @author Cody Williams
 * @copyright 2015
-* @version 1.0.3
+* @version 1.0.4
 * @license BSD 3-clause
 */
 
@@ -14,7 +14,7 @@
 
 
 function template_general_settings()
-{	
+{
 	global $context, $settings, $options, $scripturl, $txt, $modSettings,$themeurl;
 
 	
