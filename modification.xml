@@ -6,22 +6,22 @@
 *
 * @author Cody Williams
 * @copyright 2015
-* @version 1.0
+* @version 1.0.4
 * @license BSD 3-clause
 */
 -->
 
 <modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
-<id>Cody:ActivityChecker</id>
-<version>1.0</version>
-<file name="$languagedir/Modlog.english.php">
-    <operation>
-      <search position="end" />
-      <add><![CDATA[
+	<id>cody:ActivityChecker</id>
+	<version>1.0.4</version>
+	<file name="$languagedir/Modlog.english.php">
+		<operation>
+			<search position="end" />
+			<add><![CDATA[
 //Activity Checker Mod
-$txt['modlog_ac_inactive_check'] = 'Moved {members} from "{group_from}" to "{group_to}".';
-$txt['modlog_ac_active_check'] = 'Moved {members} from "{group_from}" to "{group_to}".';
+$txt['modlog_ac_inactive_check'] = 'Moved {members} from &quot;{group_from}&quot; to &quot;{group_to}&quot;.';
+$txt['modlog_ac_active_check'] = 'Moved {members} from &quot;{group_from}&quot; to &quot;{group_to}&quot;.';
 ]]></add>
-    </operation>
-  </file>
+		</operation>
+	</file>
 </modification>

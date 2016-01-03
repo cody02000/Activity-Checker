@@ -4,7 +4,7 @@
 *
 * @author Cody Williams
 * @copyright 2015
-* @version 1.0.3
+* @version 1.0.4
 * @license BSD 3-clause
 */
 
@@ -19,8 +19,8 @@ elseif (!defined('SMF'))
 
 global $modSettings;
 
-  $defaults = array(
-    'activity_checker_cats'=> 0,
+$defaults = array(
+	'activity_checker_cats'=> 0,
 	'activity_checker_inactive_group'=> 0,
 	'activity_checker_inactive_time'=> 4,
 	'activity_checker_categories' => 0,
@@ -34,16 +34,16 @@ global $modSettings;
 	'activity_checker_email_enable' => 0,
 	'activity_checker_email_subject' => 0,
 	'activity_checker_email_message' => 0,
-  );
+);
   
-  $updates = array(
-    'activity_checker_version' => '1.0.3',
-  );
+$updates = array(
+	'activity_checker_version' => '1.0.4',
+);
   
-  foreach ($defaults as $index => $value)
-    if (!isset($modSettings[$index]))
-      $updates[$index] = $value;
+foreach ($defaults as $index => $value)
+	if (!isset($modSettings[$index]))
+		$updates[$index] = $value;
   
-  updateSettings($updates);
+updateSettings($updates);
 
 ?>
