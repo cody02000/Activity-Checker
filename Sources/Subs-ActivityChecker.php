@@ -4,13 +4,13 @@
 *
 * @author Cody Williams
 * @copyright 2015
-* @version 1.0.3
+* @version 1.0.4
 * @license BSD 3-clause
 */
 
 // First of all, we make sure we are accessing the source file via SMF so that people can not directly access the file. 
 if (!defined('SMF'))
-  die('Hack Attempt...');
+	die('Hack Attempt...');
 
 
 /**
@@ -181,7 +181,7 @@ function list_getItemsNoPostsChecker($start, $items_per_page, $sort)
 			'members' => $memberids,
 		)
 	);
-	
+
 	// Make a list of the 'lastest posts' for each member
 	while($row = $smcFunc['db_fetch_assoc']($result)) {
 		$members[$row['id_member']]['last_post_link'] = '<a href="' . $scripturl . '?topic=' . $row['id_topic'] . '.msg' . $row['id_msg'] . '#msg' . $row['id_msg'] . '">' . date('F d, Y, h:i:s a',$row['poster_time']) . '</a>';
