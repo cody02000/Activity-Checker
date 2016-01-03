@@ -14,7 +14,7 @@ Activity Checker, a mod for Simple Machines Forum, checks whether a member is in
 For the mod to work, active and inactive membergroups must be specified in the general settings.  As well as which categories to check.  PM to Inactive Members and Email to Deleted Members must be enabled to use those features.  If a subject and message are not specified in the settings, a default subject and message will be used.
 
 ##License
-Copyright (c) 2015, Cody Williams
+Copyright (c) 2016, Cody Williams
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

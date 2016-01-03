@@ -3,7 +3,7 @@
 * @package Acitivity Checker
 *
 * @author Cody Williams
-* @copyright 2015
+* @copyright 2016
 * @version 1.0.4
 * @license BSD 3-clause
 */
