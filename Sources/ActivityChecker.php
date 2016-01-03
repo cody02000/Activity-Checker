@@ -4,13 +4,13 @@
 *
 * @author Cody Williams
 * @copyright 2015
-* @version 1.0.3
+* @version 1.0.4
 * @license BSD 3-clause
 */
 
 // First of all, we make sure we are accessing the source file via SMF so that people can not directly access the file. 
 if (!defined('SMF'))
-  die('Hack Attempt...');
+	die('Hack Attempt...');
 
 
 /**
@@ -121,7 +121,7 @@ function activityChecker_inactiveList($return_config = false)
 			activityChecker_addMembersToGroup($_POST['member'], $modSettings['activity_checker_inactive_group'], 'auto');
 			activityChecker_logMembergroupChange($_POST['member']);
 			logAction('inactive_check',array('members' => implode(', ',$realnames), 'group_from' => $activityChecker['group_names'][$modSettings['activity_checker_active_group']], 'group_to' => $activityChecker['group_names'][$modSettings['activity_checker_inactive_group']]),'admin');
-			
+
 			if (!empty($modSettings['activity_checker_inactive_pm_enable']) && !empty($membernames)) {
 				$subject = empty($modSettings['activity_checker_inactive_pm_subject']) ? $txt['activity_checker_default_pm_subject'] : $modSettings['activity_checker_inactive_pm_subject'];
 				$message = empty($modSettings['activity_checker_inactive_pm_message']) ? $txt['activity_checker_default_pm_message'] : $modSettings['activity_checker_inactive_pm_message'];
