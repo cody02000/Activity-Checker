@@ -8,11 +8,6 @@
 * @license BSD 3-clause
 */
 
-// Editing or adding holidays.
-
-
-
-
 function template_general_settings()
 {
 	global $context, $settings, $options, $scripturl, $txt, $modSettings,$themeurl;
@@ -37,7 +32,6 @@ echo '</dl>';
 	
 	echo '		<div style="text-align: right;"><input type="submit" name="save" value="', $txt['activity_checker_save_general_settings'], '" class="button_submit"></div>
 			<input type="hidden" name="', $context['session_var'], '" value="', $context['session_id'], '" />
-		</div>
 	</form>';
 
 
